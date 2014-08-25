@@ -1,6 +1,6 @@
-/*global jQuery, _, window, document, console, Error */
+/*global jQuery, document, console, Error */
 
-(function ($) {
+(function (g, $) {
 "use strict";
 
 var FormHighligher = function () {
@@ -17,13 +17,13 @@ var FormHighligher = function () {
  */
 FormHighligher.prototype.init = function(options)
 {
-  if (!_.isObject(options))
+  if (!$.isPlainObject(options))
     throw new Error("options must be object");
   var _this = this;
-  _.each(options, function (value, name) {
-    if (!_this.hasOwnProperty(name))
-      throw new Error("unknown property: " + name)
-    _this[name] = value;
+  $.each(options, function (name) {
+      if (!_this.hasOwnProperty(name))
+        throw new Error("unknown property: " + name);
+      _this[name] = options[name];
   });
 };
 
@@ -36,7 +36,7 @@ FormHighligher.prototype.clearForm = function(form)
   var $form = $(form), $inputMessageBlock, $mainMessageBlock;
 
   if (!this.invalidClassName)
-    throw new Error("invalid class is not specified")
+    throw new Error("invalid class is not specified");
   if (this.inputStateSelector)
     $form.find(this.inputStateSelector).removeClass(this.invalidClassName);
   if (this.inputMessageClassName) {
@@ -113,7 +113,7 @@ FormHighligher.prototype.highlightInput = function(form, inputName,
 FormHighligher.prototype.showCommonErrors = function (form, errors)
 {
   var $form = $(form), mainMessageBlock;
-  if (!_.isArray(errors))
+  if (!$.isArray(errors))
     throw new Error("errors must be array");
   var $mainMessageBlock = $form.find('.' + this.mainMessageClassName);
   if (!$mainMessageBlock.length) {
@@ -126,7 +126,7 @@ FormHighligher.prototype.showCommonErrors = function (form, errors)
   }
   var html = errors.join('<br>');
   $mainMessageBlock.html(html);
-  if ($mainMessageBlock.is("hidden"))
+  if ($mainMessageBlock.is(":hidden"))
     $mainMessageBlock.show();
 };
 
@@ -139,20 +139,24 @@ FormHighligher.prototype.highlight = function(form, errors)
 {
   var $form = $(form);
   this.clearForm($form);
-  if (!_.isObject(errors))
-    throw new Error("errors must be object");
-  if (_.isEmpty(errors))
+  if (!$.isPlainObject(errors))
+    throw new Error("errors must be plain object");
+  if ($.isEmptyObject(errors))
     return;
-  var _this = this, commonErrors = [];
-  _.each(errors, function (errorText, inputName) {
-    if (!_.isNaN(Number(inputName)))
+  var _this = this, commonErrors = [], cnt = 0;
+  $.each(errors, function (inputName, errorText) {
+    if (!isNaN(Number(inputName))) {
       commonErrors.push(errorText);
-    else
+    } else {
       _this.highlightInput($form, inputName, errorText);
+      if (cnt === 0)
+        $form[0][inputName].focus();
+      cnt++;
+    }
   });
   this.showCommonErrors($form, commonErrors);
 };
 
-window.FormHighligher = FormHighligher;
+g.FormHighligher = FormHighligher;
 
-})(jQuery);
+})(this, jQuery);
