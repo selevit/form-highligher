@@ -10,16 +10,17 @@ JS tool for showing errors at web forms
 /**
 * FormHighligher settings
 */
-var hlOptions = {
+var highligher = new FormHighligher();
+
+highligher.init({
  inputStateSelector: ".b-form__block",
  invalidClassName: "b-form_error",
  validClassName: "b-form_valid",
  mainMessageClassName: "b-form__main_error",
  inputMessageClassName: "b-form__error-label_input"
-};
-var highligher = new FormHighligher();
-highligher.init(hlOptions);
+});
 
+// show errors on the form
 var errors = {
     "email": "Incorrect email"<
     "subject": "Required field",
