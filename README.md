@@ -6,7 +6,7 @@ JS tool for showing errors at web forms
 ## Example of usage
 
 ```javascript
-// Highligher initializing...
+/* Highligher initializing */
 /**
 * FormHighligher settings
 */
