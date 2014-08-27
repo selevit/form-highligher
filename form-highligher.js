@@ -115,6 +115,8 @@ FormHighligher.prototype.showCommonErrors = function (form, errors)
   var $form = $(form), mainMessageBlock;
   if (!$.isArray(errors))
     throw new Error("errors must be array");
+  if (errors.length === 0)
+    return;
   var $mainMessageBlock = $form.find('.' + this.mainMessageClassName);
   if (!$mainMessageBlock.length) {
     console.warn(
