@@ -7,7 +7,6 @@ var FormHighligher = function () {
   this.inputStateSelector = null;
   this.inputMessageClassName = null;
   this.invalidClassName = null;
-  this.validClassName = null;
   this.mainMessageClassName = null;
 };
 
