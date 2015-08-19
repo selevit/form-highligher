@@ -86,8 +86,7 @@
      * @param string inputName Field name ("name" attribute)
      * @param string errorText Text of the field error
      */
-    FormHighlighter.prototype.highlightInput = function(form, inputName,
-        errorText) {
+    FormHighlighter.prototype.highlightInput = function(form, inputName, errorText) {
 
         var input, inputStateBlock, inputMessageBlock;
 
