@@ -8,6 +8,7 @@
         this.inputMessageClassName = null;
         this.mainMessageClassName = null;
         this.invalidClassName = null;
+        this.commonErrorSeparator = '<br>';
     };
 
     /**
@@ -168,7 +169,7 @@
             form.appendChild(mainMessageBlock);
         }
 
-        mainMessageBlock.innerHTML = errors.join('<br>');
+        mainMessageBlock.innerHTML = errors.join(this.commonErrorSeparator);
         if (mainMessageBlock.style.display === 'none') {
             mainMessageBlock.style.display = ''; // default style
         }
