@@ -17,7 +17,7 @@ highlighter.init({
     inputStateClassName: "b-form__block",
     invalidClassName: "b-form_error",
     mainMessageClassName: "b-form__main_error",
-    inputMessageClassName: "b-form__error-label_input"
+    inputMessageClassName: "b-form__help"
 });
 
 // show errors on the form
