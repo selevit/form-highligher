@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form Highlighter test</title>
+</head>
+<body>
+    <form action="." method="post" id="email-form" class="b-form">
+        <div class="b-form__block">
+            <label class="b-form__label">E-mail</label>
+            <input class="b-form__control" name="email" value="" type="email">
+        </div>
+        <div class="b-form__block">
+            <label class="b-form__label">Subject</label>
+            <input class="b-form__control" name="subject" value="" type="text">
+        </div>
+        <div class="b-form__main-error"></div>
+    </form>
+
+    <script src="./form-highlighter.js"></script>
+    <script>
+        /* Highlighter initializing */
+        var highlighter = new FormHighlighter();
+
+        /**
+        * FormHighlighter settings
+        */
+        highlighter.init({
+            inputStateClassName: "b-form__block",
+            invalidClassName: "b-form_error",
+            mainMessageClassName: "b-form__main_error",
+            inputMessageClassName: "b-form__error-label_input"
+        });
+
+        // show errors on the form
+        var errors = {
+            "email": "Incorrect email",
+            "subject": "Required field",
+            "0": "Non-field error 1",
+            "1": "Non-field error 2"
+        };
+
+        var form = document.querySelector('#email-form');
+        highlighter.highlight(form, errors);
+    </script>
+</body>
+</html>
