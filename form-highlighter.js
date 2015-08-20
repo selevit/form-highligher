@@ -34,24 +34,28 @@
     /**
      * Remove all errors from form
      *
-     * @param {Element|string} form Form selector or DOM Element
+     * @param {Element} form DOM element of form
      */
     FormHighlighter.prototype.clearForm = function(form) {
-
         var inputMessageBlock, mainMessageBlock;
 
         if (!(form instanceof Element)) {
-            form = document.querySelector(form);
+            throw new Error('form must be instance of Element'); 
         }
-
         if (!this.invalidClassName) {
             throw new Error("invalid class is not specified");
         }
 
         if (this.inputStateClassName) {
-            var state = form.querySelector(this.inputStateClassName);
+            var state = form.querySelector(this.inputStateClassName),
+                classList, index;
             if (state) {
-                state.classList.remove(this.invalidClassName);
+                classList = state.className.split(/\s/);
+                index = classList.indexOf(this.invalidClassName);
+                if (index !== -1) {
+                    classList.pop(index);
+                    state.className = classList.join(' ');
+                }
             }
         }
 
@@ -83,32 +87,31 @@
     /**
      * Highlight form field errors
      *
-     * @param {string|Element} form Selector or DOM element of the form
+     * @param {Element} form DOM element of form
      * @param string inputName Field name ("name" attribute)
      * @param string errorText Text of the field error
      */
     FormHighlighter.prototype.highlightInput = function(form, inputName, errorText) {
-
         var input, inputStateBlock, inputMessageBlock;
-
         if (!(form instanceof Element)) {
-            form = document.querySelector(form);
+            throw new Error('form must be instance of Element'); 
         }
-
         input = form.elements[inputName];
         if (!input) {
             throw new Error('form has no input with name: ' + inputName);
         }
-
         if (!this.inputStateClassName) {
             throw new Error('inputStateClassName is not specified');
         }
 
         // Find element to add input state class
-        var el;
+        var el, classList;
+
         do {
             el = input.parentNode;
-        } while (el.tagName !== 'form' && !el.classList.contains(this.inputStateClassName)); // class
+            classList = el.className.split(/\s/);
+        } while (el.tagName !== 'form' && classList.indexOf(this.inputStateClassName) === -1);
+
         if (!el) {
             throw new Error(
                 'input has no parent element with selector: ' +
@@ -138,22 +141,22 @@
         }
 
         // Add error class
-        if (!inputStateBlock.classList.contains(this.invalidClassName)) {
-            inputStateBlock.classList.add(this.invalidClassName);
+        classList = inputStateBlock.className.split(/\s/);
+        if (classList.indexOf(this.invalidClassName) === -1) {
+            classList.push(this.invalidClassName);
+            inputStateBlock.className = classList.join(' ');
         }
     };
 
     /**
      * Show common errors of the form
      *
-     * @param {string|Element} form Selector or DOM element of form
-     * @param {Array} errors list of common (non-field) errors
+     * @param {Element} form DOM element of form
+     * @param {Array} errors List of common (non-field) errors
      */
     FormHighlighter.prototype.showCommonErrors = function (form, errors) {
-        var mainMessageBlock;
-
         if (!(form instanceof Element)) {
-            form = document.querySelector(form);
+            throw new Error('form must be instance of Element'); 
         }
         if (Object.prototype.toString.call(errors) !== '[object Array]') {
             throw new Error('errors must be an array');
@@ -162,7 +165,9 @@
             return;
         }
 
-        mainMessageBlock = form.querySelector('.' + this.mainMessageClassName);
+        var mainMessageBlock = form.querySelector(
+            '.' + this.mainMessageClassName
+        );
         if (!mainMessageBlock) {
             mainMessageBlock = document.createElement('div');
             mainMessageBlock.className = this.mainMessageClassName;
@@ -178,19 +183,19 @@
     /**
      * Highlight field errors in form
      *
-     * @param {string|Element} form Selefctor of form or DOM element
+     * @param {Element} form DOM element of form
      * @param {object} errors List of field errors
      */
     FormHighlighter.prototype.highlight = function(form, errors) {
         if (!(form instanceof Element)) {
-            form = document.querySelector(form);
+            throw new Error('form must be instance of Element'); 
         }
-        this.clearForm(form);
         if (typeof errors !== 'object' || errors.constructor !== Object) {
             throw new Error('errors must be plain object');
         }
 
         var commonErrors = [], counter = 0;
+        this.clearForm(form);
 
         for (var key in errors) {
             if (errors.hasOwnProperty(key)) {
