@@ -72,30 +72,30 @@
         <div class="b-form__main-error  b-form__myblock ololo ololo2"></div>
     </form>
 
-    <script src="./form-highlighter.js"></script>
+    <script src="./formHL.js"></script>
     <script>
+
         /* Highlighter initializing */
-        var highlighter = new FormHighlighter();
+        var hl = new FormHL();
         /**
-        * FormHighlighter settings
+        * FormHL settings
         */
-        highlighter.init({
+        hl.init({
             inputStateClassName: "b-form__block",
             invalidClassName: "b-form_error",
             mainMessageClassName: "b-form__main-error",
             inputMessageClassName: "b-form__help"
         });
-        var form = document.querySelector('#email-form');
-        form.addEventListener('submit', function (e) {
+
+        document.querySelector('#email-form').onsubmit = function (e) {
             e.preventDefault();
-            highlighter.highlight(e.target, {
+            hl.highlight(e.target, {
                 "email": "Incorrect email",
                 "subject": "Required field",
                 "0": "Non-field error 1",
                 "1": "Non-field error 2"
             });
-        });
-
+        };
     </script>
 </body>
 </html>

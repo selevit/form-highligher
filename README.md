@@ -1,19 +1,19 @@
-Form-highligher
+FormHL
 ===============
 
-JS tool for showing errors at web forms
+JS tool for highlighing errors at web forms
 
 ## Example of usage
 
 ```javascript
 
 /* Highlighter initializing */
-var highlighter = new FormHighlighter();
+var hl = new FormHL();
 
 /**
-* FormHighlighter settings
+* FormHL settings
 */
-highlighter.init({
+hl.init({
     inputStateClassName: "b-form__block",
     invalidClassName: "b-form_error",
     mainMessageClassName: "b-form__main_error",
@@ -27,6 +27,7 @@ var errors = {
     "0": "Non-field error 1",
     "1": "Non-field error 2"
 };
+
 var form = document.querySelector('#email-form');
-highlighter.highlight(form, errors);
+hl.highlight(form, errors);
 ```

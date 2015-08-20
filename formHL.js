@@ -3,7 +3,7 @@
 (function (exports) {
     'use strict';
 
-    var FormHighlighter = function () {
+    var FormHL = function () {
         this.inputStateClassName = null;
         this.inputMessageClassName = null;
         this.mainMessageClassName = null;
@@ -16,7 +16,7 @@
      *
      * @param {object} options Parameters of highlighter
      */
-    FormHighlighter.prototype.init = function(options) {
+    FormHL.prototype.init = function(options) {
         if (typeof options === 'object' && options.constructor === Object) {
             for (var key in options) {
                 if (options.hasOwnProperty(key)) {
@@ -36,7 +36,7 @@
      *
      * @param {Element} form DOM element of form
      */
-    FormHighlighter.prototype.clearForm = function(form) {
+    FormHL.prototype.clearForm = function(form) {
         var inputMessageBlock, mainMessageBlock;
 
         if (!(form instanceof Element)) {
@@ -91,7 +91,7 @@
      * @param string inputName Field name ("name" attribute)
      * @param string errorText Text of the field error
      */
-    FormHighlighter.prototype.highlightInput = function(form, inputName, errorText) {
+    FormHL.prototype.highlightInput = function(form, inputName, errorText) {
         var input, inputStateBlock, inputMessageBlock;
         if (!(form instanceof Element)) {
             throw new Error('form must be instance of Element'); 
@@ -154,7 +154,7 @@
      * @param {Element} form DOM element of form
      * @param {Array} errors List of common (non-field) errors
      */
-    FormHighlighter.prototype.showCommonErrors = function (form, errors) {
+    FormHL.prototype.showCommonErrors = function (form, errors) {
         if (!(form instanceof Element)) {
             throw new Error('form must be instance of Element'); 
         }
@@ -186,7 +186,7 @@
      * @param {Element} form DOM element of form
      * @param {object} errors List of field errors
      */
-    FormHighlighter.prototype.highlight = function(form, errors) {
+    FormHL.prototype.highlight = function(form, errors) {
         if (!(form instanceof Element)) {
             throw new Error('form must be instance of Element'); 
         }
@@ -215,6 +215,6 @@
         this.showCommonErrors(form, commonErrors);
     };
 
-    exports.FormHighlighter = FormHighlighter;
+    exports.FormHL = FormHL;
 
 }(window));
