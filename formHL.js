@@ -40,7 +40,7 @@
         var inputMessageBlock, mainMessageBlock;
 
         if (!(form instanceof Element)) {
-            throw new Error('form must be instance of Element'); 
+            throw new Error('form must be instance of Element');
         }
         if (!this.invalidClassName) {
             throw new Error("invalid class is not specified");
@@ -66,19 +66,19 @@
             if (inputMessageBlock) {
                 inputMessageBlock.innerHTML = '';
                 if (inputMessageBlock.style.display !== 'none') {
-                    inputMessageBlock.style.displey = 'none';
+                    inputMessageBlock.style.display = 'none';
                 }
             }
         }
 
-        if (!this.mainMessageClassName) {
+        if (this.mainMessageClassName) {
             mainMessageBlock = form.querySelector(
                 '.' + this.mainMessageClassName
             );
             if (mainMessageBlock) {
                 mainMessageBlock.innerHTML = '';
                 if (mainMessageBlock.style.display !== 'none') {
-                    mainMessageBlock.style.displey = 'none';
+                    mainMessageBlock.style.display = 'none';
                 }
             }
         }
@@ -94,7 +94,7 @@
     FormHL.prototype.highlightInput = function(form, inputName, errorText) {
         var input, inputStateBlock, inputMessageBlock;
         if (!(form instanceof Element)) {
-            throw new Error('form must be instance of Element'); 
+            throw new Error('form must be instance of Element');
         }
         input = form.elements[inputName];
         if (!input) {
@@ -156,7 +156,7 @@
      */
     FormHL.prototype.showCommonErrors = function (form, errors) {
         if (!(form instanceof Element)) {
-            throw new Error('form must be instance of Element'); 
+            throw new Error('form must be instance of Element');
         }
         if (Object.prototype.toString.call(errors) !== '[object Array]') {
             throw new Error('errors must be an array');
@@ -188,7 +188,7 @@
      */
     FormHL.prototype.highlight = function(form, errors) {
         if (!(form instanceof Element)) {
-            throw new Error('form must be instance of Element'); 
+            throw new Error('form must be instance of Element');
         }
         if (typeof errors !== 'object' || errors.constructor !== Object) {
             throw new Error('errors must be plain object');
