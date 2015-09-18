@@ -37,7 +37,8 @@
      * @param {Element} form DOM element of form
      */
     FormHL.prototype.clearForm = function(form) {
-        var inputMessageBlock, mainMessageBlock;
+        var inputMessageBlocks, inputMessageBlock, mainMessageBlocks,
+            mainMessageBlock;
 
         if (!(form instanceof Element)) {
             throw new Error('form must be instance of Element');
@@ -47,9 +48,10 @@
         }
 
         if (this.inputStateClassName) {
-            var state = form.querySelector(this.inputStateClassName),
-                classList, index;
-            if (state) {
+            var states = form.querySelectorAll('.' + this.inputStateClassName),
+                classList, index, state;
+            for (var i = 0; i < states.length; i++) {
+                state = states[i];
                 classList = state.className.split(/\s/);
                 index = classList.indexOf(this.invalidClassName);
                 if (index !== -1) {
@@ -60,10 +62,11 @@
         }
 
         if (this.inputMessageClassName) {
-            inputMessageBlock = form.querySelector(
+            inputMessageBlocks = form.querySelectorAll(
                 '.' + this.inputMessageClassName
             );
-            if (inputMessageBlock) {
+            for (var i = 0; i < inputMessageBlocks.length; i++) {
+                inputMessageBlock = inputMessageBlocks[i];
                 inputMessageBlock.innerHTML = '';
                 if (inputMessageBlock.style.display !== 'none') {
                     inputMessageBlock.style.display = 'none';
@@ -72,10 +75,11 @@
         }
 
         if (this.mainMessageClassName) {
-            mainMessageBlock = form.querySelector(
+            mainMessageBlocks = form.querySelectorAll(
                 '.' + this.mainMessageClassName
             );
-            if (mainMessageBlock) {
+            for (var i = 0; i < mainMessageBlocks.length; i++) {
+                mainMessageBlock = mainMessageBlocks[i];
                 mainMessageBlock.innerHTML = '';
                 if (mainMessageBlock.style.display !== 'none') {
                     mainMessageBlock.style.display = 'none';
@@ -194,7 +198,7 @@
             throw new Error('errors must be plain object');
         }
 
-        var commonErrors = [], counter = 0;
+        var commonErrors = [], fieldErrorCounter = 0;
         this.clearForm(form);
 
         for (var key in errors) {
@@ -203,12 +207,12 @@
                     commonErrors.push(errors[key]);
                 } else {
                     this.highlightInput(form, key, errors[key]);
+                    if (fieldErrorCounter === 0) {
+                        // focus on first error field
+                        form.elements[key].focus();
+                    }
+                    fieldErrorCounter += 1;
                 }
-                if (counter === 0) {
-                    // focus on first error field
-                    form.elements[key].focus();
-                }
-                counter += 1;
             }
         }
 
