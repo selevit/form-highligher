@@ -1,4 +1,4 @@
-/*global window, document, Error, Object */
+/*global window, document, Error, Object, RadioNodeList */
 
 (function (exports) {
     'use strict';
@@ -103,8 +103,7 @@
         input = form.elements[inputName];
         if (!input) {
             throw new Error('form has no input with name: ' + inputName);
-        }
-        if (Object.prototype.toString.call(input) === '[object Array]') {
+        } else if (input instanceof RadioNodeList) {
             // radio inputs
             input = input[0];
         }
