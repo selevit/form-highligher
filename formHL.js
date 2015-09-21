@@ -104,21 +104,26 @@
         if (!input) {
             throw new Error('form has no input with name: ' + inputName);
         }
+        if (Object.prototype.toString.call(input) === '[object Array]') {
+            // radio inputs
+            input = input[0];
+        }
         if (!this.inputStateClassName) {
             throw new Error('inputStateClassName is not specified');
         }
-
         // Find element to add input state class
-        var el, classList;
+        var el = input, classList;
 
         do {
-            el = input.parentNode;
-            classList = el.className.split(/\s/);
-        } while (el.tagName !== 'form' && classList.indexOf(this.inputStateClassName) === -1);
+            el = el.parentNode;
+            if (el) {
+                classList = el.className.split(/\s/);
+            }
+        } while (el && el.tagName !== 'FORM' && classList.indexOf(this.inputStateClassName) === -1);
 
         if (!el) {
             throw new Error(
-                'input has no parent element with selector: ' +
+                'input has no parent element with class: ' +
                 this.inputStateClassName
             );
         }
@@ -209,7 +214,10 @@
                     this.highlightInput(form, key, errors[key]);
                     if (fieldErrorCounter === 0) {
                         // focus on first error field
-                        form.elements[key].focus();
+                        if (form.elements[key].focus !== undefined) {
+                            // element is focusable
+                            form.elements[key].focus();
+                        }
                     }
                     fieldErrorCounter += 1;
                 }
@@ -222,3 +230,4 @@
     exports.FormHL = FormHL;
 
 }(window));
+
